@@ -15,6 +15,7 @@
 import logging
 import multiprocessing
 import time
+import warnings
 
 from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor, wait
@@ -267,10 +268,8 @@ def _save_sample_stats(
         # Suppress ArviZ convention warning about chains/draws shape.
         # SMC sample_stats represent stages (not draws), so the shape mismatch is expected.
         # See: https://github.com/pymc-devs/pymc/issues/7821
-        import warnings as _warnings
-
-        with _warnings.catch_warnings():
-            _warnings.filterwarnings(
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
                 "ignore",
                 message="More chains.*than draws",
                 category=UserWarning,
